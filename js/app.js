@@ -6,6 +6,7 @@ import { circuits } from "./data/circuits.js";
 import { getLapTime } from "./api/lapTimes.js";
 import { getHistory, pushDuel, clearHistory, formatHistoryDate } from "./history.js";
 import { API_BASE } from "./config.js";
+import { showToast } from "./toast.js";
 
 let radarChartInstance = null;
 
@@ -128,8 +129,14 @@ function preparerComparaison() {
     const keys = [1, 2, 3]
         .map((i) => document.getElementById("select" + i).value)
         .filter((v) => v !== "none");
-    if (keys.length < 2) return alert("⚠️ Sélectionne au moins 2 monoplaces !");
-    if (new Set(keys).size !== keys.length) return alert("⚠️ Deux fois la même voiture !");
+    if (keys.length < 2) {
+        showToast("Sélectionne au moins 2 monoplaces pour lancer un duel.", "error");
+        return;
+    }
+    if (new Set(keys).size !== keys.length) {
+        showToast("Tu ne peux pas comparer deux fois la même voiture.", "error");
+        return;
+    }
 
     const loader = document.getElementById("loader");
     loader.style.display = "flex";
@@ -217,7 +224,11 @@ async function lancerDuel(keys) {
     } catch (err) {
         document.getElementById("loader").style.display = "none";
         console.error(err);
-        alert("Erreur lors du chargement. Vérifiez votre connexion internet.");
+        showToast(
+            "Erreur lors du chargement des données. Vérifie ta connexion internet et réessaie.",
+            "error",
+            5500,
+        );
     }
 }
 
