@@ -31,19 +31,19 @@
             <div class="selector-card">
                 <label>MONOPLACE 1</label>
                 <select id="select-year1" class="year-select" onchange="filterCarsBySlot(1)"></select>
-                <div class="image-preview" id="preview1"><img src="images/f1-logo.png"></div>
+                <div class="image-preview" id="preview1"><img src="images/f1-logo.png" alt=""></div>
                 <select id="select1" class="car-select" onchange="updatePreview(1)"></select>
             </div>
             <div class="selector-card">
                 <label>MONOPLACE 2</label>
                 <select id="select-year2" class="year-select" onchange="filterCarsBySlot(2)"></select>
-                <div class="image-preview" id="preview2"><img src="images/f1-logo.png"></div>
+                <div class="image-preview" id="preview2"><img src="images/f1-logo.png" alt=""></div>
                 <select id="select2" class="car-select" onchange="updatePreview(2)"></select>
             </div>
             <div class="selector-card">
                 <label>MONOPLACE 3</label>
                 <select id="select-year3" class="year-select" onchange="filterCarsBySlot(3)"></select>
-                <div class="image-preview" id="preview3"><img src="images/f1-logo.png"></div>
+                <div class="image-preview" id="preview3"><img src="images/f1-logo.png" alt=""></div>
                 <select id="select3" class="car-select" onchange="updatePreview(3)"></select>
             </div>
         </section>
@@ -55,7 +55,7 @@
 
         <section id="winner-zone"></section>
         <section id="comparison-grid" class="comparison-grid"></section>
-        
+
         <section id="chart-zone" class="chart-zone" style="display: none;">
             <canvas id="radarChart"></canvas>
         </section>
@@ -68,6 +68,6 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>
