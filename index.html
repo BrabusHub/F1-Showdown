@@ -9,6 +9,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <div class="bg-animated" aria-hidden="true"></div>
+
     <div id="loader" class="loader-overlay" style="display: none;">
         <div class="spinner"></div>
         <h2>ANALYSE TÉLÉMÉTRIQUE...</h2>
@@ -58,6 +60,13 @@
 
         <section id="chart-zone" class="chart-zone" style="display: none;">
             <canvas id="radarChart"></canvas>
+        </section>
+
+        <section id="duel-history-section" class="duel-history-section" aria-label="Historique des duels">
+            <h2 class="duel-history-title">Historique des duels</h2>
+            <p class="duel-history-hint">Les derniers résultats sont enregistrés sur cet appareil.</p>
+            <div id="duel-history-list" class="duel-history-list"></div>
+            <button type="button" id="btn-clear-history" class="btn-clear-history">Vider l’historique</button>
         </section>
     </main>
 

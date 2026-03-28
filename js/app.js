@@ -4,6 +4,7 @@
 import { cars } from "./data/cars.js";
 import { circuits } from "./data/circuits.js";
 import { getLapTime } from "./api/lapTimes.js";
+import { getHistory, pushDuel, clearHistory, formatHistoryDate } from "./history.js";
 
 let radarChartInstance = null;
 
@@ -27,6 +28,48 @@ function init() {
         });
         filterCarsBySlot(i);
     }
+
+    document.getElementById("btn-clear-history").addEventListener("click", () => {
+        if (!confirm("Supprimer tout l’historique des duels ?")) return;
+        clearHistory();
+        renderDuelHistory();
+    });
+
+    renderDuelHistory();
+}
+
+function renderDuelHistory() {
+    const container = document.getElementById("duel-history-list");
+    const items = getHistory();
+    if (items.length === 0) {
+        container.innerHTML = `<p class="duel-history-empty">Aucun duel enregistré pour l’instant. Lance une comparaison pour remplir l’historique.</p>`;
+        return;
+    }
+    container.innerHTML = items
+        .map((entry) => {
+            const rows = entry.rows
+                .map(
+                    (r) =>
+                        `<div class="duel-history-row"><span class="duel-place">${escapeHtml(String(r.place))}</span><span class="duel-name">${escapeHtml(r.name)}</span><span class="duel-chrono">${escapeHtml(r.timeStr)}</span></div>`,
+                )
+                .join("");
+            return `
+            <article class="duel-history-card">
+                <div class="duel-history-meta">
+                    <span class="duel-history-date">${escapeHtml(formatHistoryDate(entry.at))}</span>
+                    <span class="duel-history-circuit">${escapeHtml(entry.circuitName)}</span>
+                </div>
+                <div class="duel-history-winner">🏆 ${escapeHtml(entry.winner.name)} <span class="duel-chrono">${escapeHtml(entry.winner.timeStr)}</span></div>
+                <div class="duel-history-rows">${rows}</div>
+            </article>`;
+        })
+        .join("");
+}
+
+function escapeHtml(s) {
+    const d = document.createElement("div");
+    d.textContent = s;
+    return d.innerHTML;
 }
 
 function filterCarsBySlot(id) {
@@ -89,10 +132,26 @@ async function lancerDuel(keys) {
                 : "";
         document.getElementById("winner-zone").innerHTML = `
             <div class="winner-banner">
-                🏆 VAINQUEUR : ${results[0].name} (${formatTime(results[0].time)})
+                🏆 VAINQUEUR : ${results[0].name}
+                <span class="winner-chrono">(${formatTime(results[0].time)})</span>
                 ${gap ? `<span class="winner-gap">${gap}</span>` : ""}
             </div>`;
         document.body.className = "theme-" + results[0].key;
+
+        pushDuel({
+            circuitKey: circuit,
+            circuitName: circuits[circuit].name,
+            winner: {
+                name: results[0].name,
+                timeStr: formatTime(results[0].time),
+            },
+            rows: results.map((c, i) => ({
+                place: ["1er", "2e", "3e"][i] || `${i + 1}e`,
+                name: c.name,
+                timeStr: formatTime(c.time),
+            })),
+        });
+        renderDuelHistory();
 
         results.forEach((c, i) => {
             const badge =
