@@ -12,7 +12,9 @@
     --bg-color: #0a0c12;
     --chrono-color: #ffffff;
     --header-h: 58px;
-    --header-accent: linear-gradient(90deg, #e10600 0%, #ffcc00 45%, #e10600 100%);
+    --header-gunmetal-top: rgba(72, 76, 84, 0.55);
+    --header-gunmetal-mid: rgba(48, 52, 60, 0.62);
+    --header-gunmetal-bot: rgba(28, 30, 36, 0.78);
 }
 
 /* ── Thèmes par vainqueur ────────────────────────────────── */
@@ -110,7 +112,7 @@ main {
     z-index: 1;
 }
 
-/* ── Bandeau fixe (identité) ─────────────────────────────── */
+/* ── Bandeau fixe — gunmetal / verre dépoli (glassmorphism) ─ */
 .site-header {
     position: fixed;
     top: 0;
@@ -118,27 +120,46 @@ main {
     right: 0;
     z-index: 90;
     height: var(--header-h);
-    background-color: #030303;
-    background-image:
-        repeating-linear-gradient(
-            -45deg,
-            transparent,
-            transparent 3px,
-            rgba(255, 255, 255, 0.028) 3px,
-            rgba(255, 255, 255, 0.028) 4px
+    isolation: isolate;
+    background:
+        linear-gradient(
+            180deg,
+            var(--header-gunmetal-top) 0%,
+            var(--header-gunmetal-mid) 52%,
+            var(--header-gunmetal-bot) 100%
         ),
         repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 4px,
-            rgba(255, 255, 255, 0.02) 4px,
-            rgba(255, 255, 255, 0.02) 5px
-        ),
-        linear-gradient(180deg, #1c1c22 0%, #060606 48%, #000000 100%);
-    background-blend-mode: normal, normal, normal;
-    border-bottom: 2px solid transparent;
-    border-image: linear-gradient(90deg, #e10600 0%, #fff200 50%, #e10600 100%) 1;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+            180deg,
+            rgba(255, 255, 255, 0.03) 0px,
+            transparent 1px,
+            transparent 2px
+        );
+    backdrop-filter: blur(16px) saturate(1.15);
+    -webkit-backdrop-filter: blur(16px) saturate(1.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.06) inset,
+        0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+/* Filet lumineux type « projecteur garage » : blanc → transparent */
+.site-header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.08) 15%,
+        rgba(255, 255, 255, 0.55) 50%,
+        rgba(255, 255, 255, 0.08) 85%,
+        transparent 100%
+    );
+    box-shadow: 0 -1px 8px rgba(255, 255, 255, 0.12);
 }
 
 .site-header__inner {
@@ -155,24 +176,34 @@ main {
 .site-brand {
     display: flex;
     align-items: baseline;
-    gap: 0.28em;
+    gap: 0.32em;
     font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
     font-style: italic;
     text-transform: uppercase;
-    letter-spacing: 0.22em;
-    transform: skewX(-10deg);
+    letter-spacing: 0.2em;
+    transform: skewX(-9deg);
     transform-origin: center left;
-    text-shadow: 0 0 24px rgba(255, 0, 60, 0.35);
 }
+
+/* F1 : blanc pur, gras — hiérarchie forte */
 .site-brand__f1 {
     font-size: 1.35rem;
-    color: #f5f6fa;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.22),
+        0 2px 8px rgba(0, 0, 0, 0.45);
 }
+
+/* SHOWDOWN : gris métallique clair, plus fin */
 .site-brand__showdown {
     font-size: 1.35rem;
-    color: #ff003c;
-    text-shadow: 0 0 20px rgba(255, 0, 60, 0.65);
+    font-weight: 500;
+    color: #b4bcc8;
+    letter-spacing: 0.24em;
+    text-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.35),
+        0 0 20px rgba(180, 195, 210, 0.15);
 }
 
 .site-header__status {
