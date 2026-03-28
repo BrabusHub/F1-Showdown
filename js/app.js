@@ -4,7 +4,7 @@
 import { cars } from "./data/cars.js";
 import { circuits } from "./data/circuits.js";
 import { getLapTime } from "./api/lapTimes.js";
-import { getHistory, pushDuel, clearHistory, formatHistoryDate } from "./history.js";
+import { getHistory, pushDuel, clearHistory, formatHistoryDate, getTotalTests } from "./history.js";
 import { API_BASE } from "./config.js";
 import { showToast } from "./toast.js";
 
@@ -61,7 +61,13 @@ function init() {
     });
 
     renderDuelHistory();
+    refreshTotalTestsDisplay();
     checkApiStatus();
+}
+
+function refreshTotalTestsDisplay() {
+    const el = document.getElementById("total-tests-count");
+    if (el) el.textContent = String(getTotalTests());
 }
 
 function renderDuelHistory() {
@@ -184,6 +190,7 @@ async function lancerDuel(keys) {
             })),
         });
         renderDuelHistory();
+        refreshTotalTestsDisplay();
 
         results.forEach((c, i) => {
             const badge =

@@ -1,5 +1,20 @@
 const STORAGE_KEY = "f1showdown_duel_history_v1";
+const TOTAL_TESTS_KEY = "f1showdown_total_tests_v1";
 const MAX_ENTRIES = 40;
+
+export function getTotalTests() {
+    try {
+        const v = localStorage.getItem(TOTAL_TESTS_KEY);
+        const n = parseInt(v, 10);
+        return Number.isFinite(n) && n >= 0 ? n : 0;
+    } catch {
+        return 0;
+    }
+}
+
+function incrementTotalTests() {
+    localStorage.setItem(TOTAL_TESTS_KEY, String(getTotalTests() + 1));
+}
 
 /**
  * @returns {Array<{ id: number, at: number, circuitKey: string, circuitName: string, winner: object, rows: object[] }>}
@@ -27,6 +42,7 @@ export function pushDuel(duel) {
         at: now,
     });
     localStorage.setItem(STORAGE_KEY, JSON.stringify(list.slice(0, MAX_ENTRIES)));
+    incrementTotalTests();
 }
 
 export function clearHistory() {
