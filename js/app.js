@@ -5,8 +5,32 @@ import { cars } from "./data/cars.js";
 import { circuits } from "./data/circuits.js";
 import { getLapTime } from "./api/lapTimes.js";
 import { getHistory, pushDuel, clearHistory, formatHistoryDate } from "./history.js";
+import { API_BASE } from "./config.js";
 
 let radarChartInstance = null;
+
+async function checkApiStatus() {
+    const el = document.getElementById("api-status-text");
+    const dot = document.getElementById("api-status-dot");
+    if (!el || !dot) return;
+    el.classList.remove("is-connected", "is-offline");
+    try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 8000);
+        const res = await fetch(`${API_BASE}/2024.json?limit=1`, { signal: ctrl.signal });
+        clearTimeout(t);
+        if (!res.ok) throw new Error("HTTP");
+        el.textContent = "Connected";
+        el.classList.add("is-connected");
+        dot.classList.remove("is-off");
+        dot.classList.add("is-on");
+    } catch {
+        el.textContent = "Hors ligne";
+        el.classList.add("is-offline");
+        dot.classList.remove("is-on");
+        dot.classList.add("is-off");
+    }
+}
 
 function init() {
     const sc = document.getElementById("select-circuit");
@@ -36,6 +60,7 @@ function init() {
     });
 
     renderDuelHistory();
+    checkApiStatus();
 }
 
 function renderDuelHistory() {

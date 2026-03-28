@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F1 Showdown - Pro Analytics</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:ital,wght@0,400;0,700;1,400;1,700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -16,12 +16,22 @@
         <h2>ANALYSE TÉLÉMÉTRIQUE...</h2>
     </div>
 
-    <header>
-        <h1>F1 <span>SHOWDOWN</span></h1>
-        <p>Comparaison Historique & Technique</p>
+    <header class="site-header" role="banner">
+        <div class="site-header__inner">
+            <div class="site-brand" aria-label="F1 Showdown">
+                <span class="site-brand__f1">F1</span>
+                <span class="site-brand__showdown">SHOWDOWN</span>
+            </div>
+            <div class="site-header__status" role="status" aria-live="polite">
+                <span class="site-header__pulse" id="api-status-dot" aria-hidden="true"></span>
+                <span class="site-header__api-label">Live API</span>
+                <span class="site-header__api-state" id="api-status-text">Vérification…</span>
+            </div>
+        </div>
     </header>
 
     <main>
+        <p class="hero-tagline">Comparaison Historique &amp; Technique</p>
         <section class="circuit-area">
             <div class="circuit-card">
                 <label>📍 CHOIX DU TRACÉ</label>

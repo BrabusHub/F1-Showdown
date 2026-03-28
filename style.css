@@ -11,6 +11,8 @@
     --main-glow: rgba(255, 0, 60, 0.4);
     --bg-color: #0a0c12;
     --chrono-color: #ffffff;
+    --header-h: 58px;
+    --header-accent: linear-gradient(90deg, #e10600 0%, #ffcc00 45%, #e10600 100%);
 }
 
 /* ── Thèmes par vainqueur ────────────────────────────────── */
@@ -98,7 +100,7 @@ body {
     color: var(--text-color);
     font-family: 'Rajdhani', sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: calc(var(--header-h) + 16px) 20px 20px 20px;
     text-align: center;
     transition: background-color 0.8s ease;
 }
@@ -108,19 +110,129 @@ main {
     z-index: 1;
 }
 
-h1 {
-    font-family: 'Orbitron', sans-serif;
-    letter-spacing: 4px;
-    margin-bottom: 5px;
-    color: #f2f4f8;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.45);
+/* ── Bandeau fixe (identité) ─────────────────────────────── */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    height: var(--header-h);
+    background-color: #030303;
+    background-image:
+        repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 3px,
+            rgba(255, 255, 255, 0.028) 3px,
+            rgba(255, 255, 255, 0.028) 4px
+        ),
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 4px,
+            rgba(255, 255, 255, 0.02) 4px,
+            rgba(255, 255, 255, 0.02) 5px
+        ),
+        linear-gradient(180deg, #1c1c22 0%, #060606 48%, #000000 100%);
+    background-blend-mode: normal, normal, normal;
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(90deg, #e10600 0%, #fff200 50%, #e10600 100%) 1;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
 }
-h1 span { color: #ff003c; text-shadow: 0 0 18px rgba(255, 0, 60, 0.55); }
-header p {
+
+.site-header__inner {
+    max-width: 1200px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.site-brand {
+    display: flex;
+    align-items: baseline;
+    gap: 0.28em;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-style: italic;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 0.22em;
+    transform: skewX(-10deg);
+    transform-origin: center left;
+    text-shadow: 0 0 24px rgba(255, 0, 60, 0.35);
+}
+.site-brand__f1 {
+    font-size: 1.35rem;
+    color: #f5f6fa;
+}
+.site-brand__showdown {
+    font-size: 1.35rem;
+    color: #ff003c;
+    text-shadow: 0 0 20px rgba(255, 0, 60, 0.65);
+}
+
+.site-header__status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7a8194;
+}
+.site-header__api-label {
+    font-weight: 700;
+    color: #5c6375;
+}
+.site-header__api-state {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: #9aa3b5;
+    transition: color 0.35s ease;
+}
+.site-header__api-state.is-connected {
+    color: #5ee4a8;
+    text-shadow: 0 0 12px rgba(0, 255, 160, 0.35);
+}
+.site-header__api-state.is-offline {
+    color: #ff8a9a;
+}
+.site-header__pulse {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #444;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+    flex-shrink: 0;
+}
+.site-header__pulse.is-on {
+    background: #00ff88;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.75);
+    animation: statusPulse 2s ease-in-out infinite;
+}
+.site-header__pulse.is-off {
+    background: #ff4466;
+    box-shadow: 0 0 8px rgba(255, 68, 102, 0.5);
+}
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(1.15); }
+}
+
+.hero-tagline {
+    margin: 0 0 36px 0;
+    padding: 0 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 0.78rem;
+    font-weight: 600;
     color: var(--text-muted);
-    margin-bottom: 40px;
 }
 
 /* ── Loader ──────────────────────────────────────────────── */
@@ -537,6 +649,13 @@ select option { background-color: #1a1a24; color: white; }
 
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 800px) {
+    :root { --header-h: 52px; }
+    .site-header__inner { padding: 0 14px; }
+    .site-brand { letter-spacing: 0.12em; }
+    .site-brand__f1, .site-brand__showdown { font-size: 1.08rem; }
+    .site-header__status { font-size: 0.65rem; gap: 6px; }
+    .site-header__api-label { font-size: 0.6rem; }
+    .hero-tagline { letter-spacing: 0.18em; font-size: 0.72rem; margin-bottom: 28px; }
     .circuit-area { flex-direction: column; align-items: center; }
     .selection-area, .comparison-grid { flex-direction: column; align-items: center; }
     .selector-card, .car-card { width: 100%; max-width: 360px; }
